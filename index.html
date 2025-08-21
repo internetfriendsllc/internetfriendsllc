@@ -1,70 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Internet Friends is a technology company making single-purpose software for everyone." />
-  <meta name="author" content="Internet Friends LLC" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Internet Friends</title>
   <style>
+    /* Global typography */
+    html { font-size: 16px; }
     body {
       margin: 0;
+      min-height: 100dvh;
       display: flex;
-      height: 100dvh;
       align-items: center;
       justify-content: center;
-      font-family: "Times New Roman", serif;
-      font-size: 1rem;
-      line-height: 1.3rem;
-      background-color: white;
-      overflow: hidden;
+      background: #fff;
+      color: #000;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;   /* 24px */
+      line-height: 1.5rem; /* fixed, per request */
+      text-rendering: optimizeLegibility;
     }
+    .content { text-align: center; max-width: 44rem; padding: 0 1.5rem; }
+    p { margin: 0; }
 
-    .content {
-      max-width: 380px;
-      margin: 0 24px;
-      text-align: left;
+    /* Links */
+    a { 
+      color: inherit; 
+      text-decoration: underline; 
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
     }
+    .plain { text-decoration: none; }
 
-    @media (min-width: 768px) {
-      .content {
-        margin: 0 40px;
-      }
-    }
-
-    .links {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-      margin-top: 24px;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: underline;
-      text-decoration-thickness: 0.5px;
-      text-underline-offset: 2px;
-      display: inline-block;
-    }
+    /* Spacing helpers (multiples of rem for predictable rhythm) */
+    .spacer      { height: 1rem; }  /* 1x line */
+    .spacer-2x   { height: 2rem;   }  /* 2x lines */
+    .spacer-3x   { height: 3rem; }  /* 3x lines */
+    .spacer-4x   { height: 4rem; }  /* 4x lines */
+    .spacer-half { height: 0.5rem; }  /* small nudge for icon-to-link */
   </style>
 </head>
 <body>
-  <div class="content">
-    <p>Internet Friends is a technology company making single-purpose software for everyone.</p>
+  <main class="content">
+    <p>Internet Friends is a technology</p>
+    <p>company that makes single-purpose</p>
+    <p>software for everyone.</p>
 
-    <p><a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener noreferrer">
-        Garden
-      </a></p>
-    <p>A quiet platform for the creative community.
-      
-https://apps.apple.com/us/app/note-single-page-notepad/id6736500150
-    <p><a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener noreferrer">
-        Note
-      </a></p>
-    <p>A single-page notepad for iOS.
+    <div class="spacer-3x"></div>
 
-    <p>I also make things at Internet Friends LLC, an independent technology company building simple, single-purpose software like Garden and Note.</p>
-  </div>
+    <p>✿</p>
+    <div class="spacer-half"></div>
+    <p><a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener">Garden</a></p>
+    <div class="spacer-half"></div>
+    <p>A place for people who make things.</p>
+
+    <div class="spacer-3x"></div>
+
+    <p>✎</p>
+    <div class="spacer-half"></div>
+    <p><a href="https://apps.apple.com/us/app/note-single-page-notepad/id6736500150" target="_blank" rel="noopener">Note</a></p>
+    <div class="spacer-half"></div>
+    <p>A single-page notepad for iOS.</p>
+
+    <div class="spacer-4x"></div>
+
+    <p>
+      <a class="plain" href="https://internetfriends.llc/terms" target="_blank" rel="noopener">Terms</a>
+      &amp;
+      <a class="plain" href="https://internetfriends.llc/privacy" target="_blank" rel="noopener">Privacy</a>
+    </p>
+    <div class="spacer-half"></div>
+    <p>© 2025 Internet Friends LLC</p>
+  </main>
 </body>
 </html>
