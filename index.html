@@ -17,60 +17,70 @@
       color: #000;
       font-family: "Times New Roman", Times, serif;
       font-size: 1.5rem;   /* 24px */
-      line-height: 1.5rem; /* fixed, per request */
+      line-height: 1.6rem; /* fixed */
       text-rendering: optimizeLegibility;
     }
-    .content { text-align: center; max-width: 44rem; padding: 0 1.5rem; }
+
+    /* Layout */
+    .content { text-align: center; max-width: 350px; padding: 0 1.5rem; }
     p { margin: 0; }
 
     /* Links */
     a { 
       color: inherit; 
       text-decoration: underline; 
-      text-decoration-thickness: 1px;
-      text-underline-offset: 4px;
+      text-decoration-thickness: 0.75px;
+      text-underline-offset: 2px;
     }
     .plain { text-decoration: none; }
 
-    /* Spacing helpers (multiples of rem for predictable rhythm) */
-    .spacer      { height: 1rem; }  /* 1x line */
-    .spacer-2x   { height: 2rem;   }  /* 2x lines */
-    .spacer-3x   { height: 3rem; }  /* 3x lines */
-    .spacer-4x   { height: 4rem; }  /* 4x lines */
-    .spacer-half { height: 0.5rem; }  /* small nudge for icon-to-link */
+    /* Spacing */
+    .spacer-xs { height: 0.5rem; }
+    .spacer-sm { height: 1rem; }
+    .spacer-md { height: 2rem; }
+    .spacer-lg { height: 3rem; }
+    .spacer-xl { height: 4rem; }
+
+    /* Footer */
+    .muted { color: #000; font-size: 1rem; }
+    .footer {
+      position: fixed;
+      left: 0; right: 0; bottom: 2rem;
+      text-align: center;
+      line-height: 1.5rem;
+    }
   </style>
 </head>
 <body>
   <main class="content">
+    <!-- Intro -->
     <p>Internet Friends is a technology</p>
     <p>company that makes single-purpose</p>
     <p>software for everyone.</p>
 
-    <div class="spacer-3x"></div>
+    <div class="spacer-md"></div>
 
+    <!-- Garden block -->
     <p>✿</p>
-    <div class="spacer-half"></div>
-    <p><a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener">Garden</a></p>
-    <div class="spacer-half"></div>
-    <p>A place for people who make things.</p>
+    <div class="spacer-xs"></div>
+    <p><a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener">Garden</a> is a quiet platform for the creative community.</p>
 
-    <div class="spacer-3x"></div>
+    <div class="spacer-md"></div>
 
+    <!-- Note block -->
     <p>✎</p>
-    <div class="spacer-half"></div>
-    <p><a href="https://apps.apple.com/us/app/note-single-page-notepad/id6736500150" target="_blank" rel="noopener">Note</a></p>
-    <div class="spacer-half"></div>
-    <p>A single-page notepad for iOS.</p>
+    <div class="spacer-xs"></div>
+    <p><a href="https://apps.apple.com/us/app/note-single-page-notepad/id6736500150" target="_blank" rel="noopener">Note</a> is a single-page, offline notepad for iOS.</p>
+  </main>
 
-    <div class="spacer-4x"></div>
-
-    <p>
+  <!-- Footer pinned to bottom -->
+  <footer class="footer">
+    <p class="muted">
       <a class="plain" href="https://internetfriends.llc/terms" target="_blank" rel="noopener">Terms</a>
       &amp;
       <a class="plain" href="https://internetfriends.llc/privacy" target="_blank" rel="noopener">Privacy</a>
     </p>
-    <div class="spacer-half"></div>
-    <p>© 2025 Internet Friends LLC</p>
-  </main>
+    <p class="muted">© 2025 Internet Friends LLC</p>
+  </footer>
 </body>
 </html>
