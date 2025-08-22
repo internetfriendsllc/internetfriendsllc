@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Internet Friends</title>
+  <style>
+    /* Global typography */
+    html { font-size: 16px; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #000;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1rem;   /* 24px */
+      line-height: 1.3rem; /* fixed */
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Layout */
+    .content { text-align: center; max-width: 230px; padding: 0 1.5rem; }
+    p { margin: 0; }
+
+    /* Links */
+    a { 
+      color: inherit; 
+      text-decoration: underline; 
+      text-decoration-thickness: 0.75px;
+      text-underline-offset: 2px;
+    }
+    .plain { text-decoration: none; }
+
+    /* Spacing */
+    .spacer-xs { height: 0.5rem; }
+    .spacer-sm { height: 1rem; }
+    .spacer-md { height: 2rem; }
+    .spacer-lg { height: 3rem; }
+    .spacer-xl { height: 4rem; }
+
+    /* Footer */
+    .muted { color: #000; font-size: 1rem; }
+    .footer {
+      position: fixed;
+      left: 0; right: 0; bottom: 2rem;
+      text-align: center;
+      line-height: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="content">
+    <!-- Garden block -->
+    <p>✿</p>
+    <div class="spacer-xs"></div>
+    <p><a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener">Garden</a> is a quiet platform for the creative community.</p>
+
+    <div class="spacer-md"></div>
+
+    <!-- Note block -->
+    <p>✎</p>
+    <div class="spacer-xs"></div>
+    <p><a href="https://apps.apple.com/us/app/note-single-page-notepad/id6736500150" target="_blank" rel="noopener">Note</a> is a single-page, offline notepad for iOS.</p>
+  </main>
+
+  <!-- Footer pinned to bottom -->
+  <footer class="footer">
+    <p class="muted">
+      <a class="plain" href="https://internetfriends.llc/terms" target="_blank" rel="noopener">Terms</a>
+      &amp;
+      <a class="plain" href="https://internetfriends.llc/privacy" target="_blank" rel="noopener">Privacy</a>
+    </p>
+    <p class="muted">© 2025 Internet Friends LLC</p>
+  </footer>
+</body>
+</html>
