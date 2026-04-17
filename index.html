@@ -99,6 +99,9 @@ DATA.images.splice(1, 0, DATA.images.splice(2, 1)[0]);
 DATA.bounds.splice(1, 0, DATA.bounds.splice(2, 1)[0]);
 DATA.images.splice(2, 0, DATA.images.splice(3, 1)[0]);
 DATA.bounds.splice(2, 0, DATA.bounds.splice(3, 1)[0]);
+// Swap index 0 and index 2
+[DATA.images[0], DATA.images[2]] = [DATA.images[2], DATA.images[0]];
+[DATA.bounds[0], DATA.bounds[2]] = [DATA.bounds[2], DATA.bounds[0]];
 
 const SZ = 3;
 
@@ -108,8 +111,11 @@ const ctx = canvas.getContext('2d');
 let W, H;
 let currentImg = 0;
 let animating = false;
+let animPhase = null; // 'in' or 'out'
+let currentOverlay = null;
 let raf = null;
 let particles = [];
+let placedPixels = [];
 
 let anchorCX = 0, anchorBottomY = 0;
 
@@ -284,6 +290,7 @@ function animateIn(imgIdx) {
   overlay.height = window.innerHeight;
   overlay.style.cssText = `position:fixed;top:0;left:50%;transform:translateX(-50%);width:${W}px;pointer-events:none;z-index:9999;image-rendering:pixelated;`;
   document.body.appendChild(overlay);
+  currentOverlay = overlay;
   const octx = overlay.getContext('2d');
 
   // Group pixels by row (ty), sorted bottom to top
@@ -315,6 +322,8 @@ function animateIn(imgIdx) {
 
   let tick = 0;
   animating = true;
+  animPhase = 'in';
+  placedPixels = [];
 
   function step() {
     octx.clearRect(0, 0, overlay.width, overlay.height);
@@ -333,7 +342,12 @@ function animateIn(imgIdx) {
       const y = Math.round(p.startY + (targetY - p.startY) * eased);
       octx.fillStyle = `rgb(${p.lum},${p.lum},${p.lum})`;
       octx.fillRect(p.tx, y, SZ, SZ);
-      if (progress < 1) allDone = false;
+      if (progress < 1) {
+        allDone = false;
+      } else if (!p.placed) {
+        p.placed = true;
+        placedPixels.push({ x: p.tx, y: p.ty, lum: p.lum });
+      }
     }
 
     if (!allDone) {
@@ -342,6 +356,8 @@ function animateIn(imgIdx) {
       particles = targets.map(t => ({ x: t.tx, y: t.ty, lum: t.lum }));
       drawStatic(imgIdx);
       overlay.remove();
+      currentOverlay = null;
+      animPhase = null;
       animating = false;
     }
   }
@@ -353,6 +369,7 @@ animateIn(0);
 
 function rainOut(nextIdx) {
   animating = true;
+  animPhase = 'out';
   if (raf) cancelAnimationFrame(raf);
 
   const GRAVITY = 0.6;
@@ -423,8 +440,28 @@ function rainOut(nextIdx) {
 
 let clickCount = 1;
 document.body.addEventListener('click', () => {
-  if (animating) return;
   const nextIdx = clickCount % DATA.images.length;
+
+  if (animPhase === 'in') {
+    cancelAnimationFrame(raf);
+    if (currentOverlay) { currentOverlay.remove(); currentOverlay = null; }
+    // Only rain out the pixels that actually landed
+    ctx.clearRect(0, 0, W, H);
+    for (const p of placedPixels) {
+      ctx.fillStyle = `rgb(${p.lum},${p.lum},${p.lum})`;
+      ctx.fillRect(p.x, p.y, SZ, SZ);
+    }
+    particles = placedPixels.slice();
+    animating = false;
+    animPhase = null;
+    clickCount++;
+    currentImg = nextIdx;
+    rainOut(nextIdx);
+    return;
+  }
+
+  if (animPhase === 'out') return; // let rain out finish naturally
+
   clickCount++;
   currentImg = nextIdx;
   rainOut(nextIdx);
