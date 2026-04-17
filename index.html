@@ -391,17 +391,22 @@ function rainOut(nextIdx) {
   const GRAVITY = 0.6;
   const RESTITUTION = 0.45;
   const floor = H - SZ;
+  const DENSITY = 3;
 
-  const drops = particles.map(p => ({
-    x: p.x, y: p.y, lum: p.lum,
-    vy: Math.random() * 1.5,
-    delay: Math.floor(Math.random() * 8),
-    tick: 0,
-    bounced: false,
-    fading: false,
-    alpha: 1,
-    done: false,
-  }));
+  const drops = particles.flatMap(p =>
+    Array.from({ length: DENSITY }, () => ({
+      x: p.x + (Math.random() - 0.5) * SZ * 2,
+      y: p.y,
+      lum: p.lum,
+      vy: Math.random() * 1.5,
+      delay: Math.floor(Math.random() * 8),
+      tick: 0,
+      bounced: false,
+      fading: false,
+      alpha: 1,
+      done: false,
+    }))
+  );
 
   function step() {
     ctx.clearRect(0, 0, W, H);
