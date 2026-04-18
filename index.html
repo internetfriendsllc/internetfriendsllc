@@ -395,7 +395,7 @@ function rainOut(nextIdx) {
 
   const drops = particles.flatMap(p =>
     Array.from({ length: DENSITY }, () => ({
-      x: p.x + Math.round((Math.random() - 0.5) * 2) * SZ,
+      x: p.x,
       y: p.y,
       lum: p.lum,
       vy: Math.random() * 1.5,
