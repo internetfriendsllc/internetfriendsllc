@@ -1,10 +1,12 @@
 <!doctype html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Open Graph -->
+
   <meta property="og:title" content="Internet Friends LLC">
   <meta property="og:description" content="A software company in California.">
   <meta property="og:image" content="https://internetfriends.llc/og-image.png">
@@ -12,15 +14,17 @@
   <meta property="og:type" content="website">
 
   <title>Internet Friends LLC</title>
-  
+
   <!-- Favicons (light/dark mode) -->
+
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-light.png" media="(prefers-color-scheme: light)">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-dark.png" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-light.png">
 
   <!-- Apple Touch Icon -->
+
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-  
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -88,6 +92,7 @@
     .footer a { color: #000; text-decoration: none; }
     .footer a:hover { text-decoration: underline; text-decoration-thickness: 0.75px; text-underline-offset: 2px; }
   </style>
+
 </head>
 <body>
 
@@ -96,9 +101,12 @@
 <div id="text-block">
     <p>Internet Friends is a small software company based in California. </p>
 
-    <div class="spacer-sm"></div>
+```
+<div class="spacer-sm"></div>
 
-    <p>We created <a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener">Garden</a>, a quiet platform for the creative community. <a href="https://apps.apple.com/us/app/note-single-page-notepad/id6736500150" target="_blank" rel="noopener">Note</a>, a single-page notepad. And <a href="https://apps.apple.com/us/app/word-friends/id6748571476" target="_blank" rel="noopener">Word Friends</a>, a hand-drawn word game.</p>
+<p>We created <a href="https://apps.apple.com/us/app/garden-creative-community/id6504888170" target="_blank" rel="noopener">Garden</a>, a quiet platform for the creative community. <a href="https://apps.apple.com/us/app/note-single-page-notepad/id6736500150" target="_blank" rel="noopener">Note</a>, a single-page notepad. And <a href="https://apps.apple.com/us/app/word-friends/id6748571476" target="_blank" rel="noopener">Word Friends</a>, a hand-drawn word game.</p>
+```
+
   </div>
 </div>
 
@@ -143,7 +151,6 @@ function computeAnchor() {
 function resize() {
   const maxW = Math.max(...DATA.bounds.map(b => b.w)) * SZ;
   const maxH = Math.max(...DATA.bounds.map(b => b.h)) * SZ;
-
 
   W = canvas.width = maxW;
   H = canvas.height = maxH;
@@ -299,8 +306,6 @@ function animateIn(imgIdx) {
   const targets = getTargets(imgIdx);
   const TRAVEL = 25;
 
-  // Overlay centered with CSS — tracks the canvas as the viewport resizes.
-  // x-coords are identical to canvas coords. y-coords are recalculated each frame.
   const overlay = document.createElement('canvas');
   overlay.width = W;
   overlay.height = window.innerHeight;
@@ -327,7 +332,7 @@ function animateIn(imgIdx) {
     row.forEach((t, i) => {
       pixelStates.push({
         tx: t.tx,
-        ty: t.ty, // canvas coords — viewport offset added per-frame
+        ty: t.ty,
         lum: t.lum,
         startY: 0,
         startTick: rowStartTick + i * stagger,
@@ -345,7 +350,6 @@ function animateIn(imgIdx) {
     octx.clearRect(0, 0, overlay.width, overlay.height);
     tick++;
 
-    // Recalculate canvas top every frame so animation stays centered on resize
     const canvasTop = canvas.getBoundingClientRect().top;
 
     let allDone = true;
@@ -407,6 +411,13 @@ function rainOut(nextIdx) {
       done: false,
     }))
   );
+
+  // Draw current state synchronously before first RAF to prevent flash
+  ctx.clearRect(0, 0, W, H);
+  for (const d of drops) {
+    ctx.fillStyle = `rgb(${d.lum},${d.lum},${d.lum})`;
+    ctx.fillRect(d.x, d.y, SZ, SZ);
+  }
 
   function step() {
     ctx.clearRect(0, 0, W, H);
@@ -488,5 +499,6 @@ document.body.addEventListener('click', () => {
   rainOut(nextIdx);
 });
 </script>
+
 </body>
 </html>
