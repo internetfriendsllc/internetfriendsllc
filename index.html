@@ -391,7 +391,7 @@ function rainOut(nextIdx) {
   const GRAVITY = 0.6;
   const RESTITUTION = 0.45;
   const floor = H - SZ;
-  const DENSITY = 4;
+  const DENSITY = 1;
 
   const drops = particles.flatMap(p =>
     Array.from({ length: DENSITY }, () => ({
