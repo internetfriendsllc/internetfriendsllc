@@ -423,14 +423,6 @@ function rainOut(nextIdx) {
         continue;
       }
 
-      if (d.fading) {
-        d.alpha -= 0.06;
-        if (d.alpha <= 0) { d.done = true; continue; }
-        ctx.fillStyle = `rgba(${d.lum},${d.lum},${d.lum},${d.alpha})`;
-        ctx.fillRect(d.x, d.y, SZ, SZ);
-        continue;
-      }
-
       d.vy += GRAVITY;
       d.y += d.vy;
 
