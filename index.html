@@ -152,6 +152,7 @@ function resize() {
   const maxW = Math.max(...DATA.bounds.map(b => b.w)) * SZ;
   const maxH = Math.max(...DATA.bounds.map(b => b.h)) * SZ;
 
+
   W = canvas.width = maxW;
   H = canvas.height = maxH;
   canvas.style.width = maxW + 'px';
@@ -306,6 +307,8 @@ function animateIn(imgIdx) {
   const targets = getTargets(imgIdx);
   const TRAVEL = 25;
 
+  // Overlay centered with CSS — tracks the canvas as the viewport resizes.
+  // x-coords are identical to canvas coords. y-coords are recalculated each frame.
   const overlay = document.createElement('canvas');
   overlay.width = W;
   overlay.height = window.innerHeight;
@@ -332,7 +335,7 @@ function animateIn(imgIdx) {
     row.forEach((t, i) => {
       pixelStates.push({
         tx: t.tx,
-        ty: t.ty,
+        ty: t.ty, // canvas coords — viewport offset added per-frame
         lum: t.lum,
         startY: 0,
         startTick: rowStartTick + i * stagger,
@@ -350,6 +353,7 @@ function animateIn(imgIdx) {
     octx.clearRect(0, 0, overlay.width, overlay.height);
     tick++;
 
+    // Recalculate canvas top every frame so animation stays centered on resize
     const canvasTop = canvas.getBoundingClientRect().top;
 
     let allDone = true;
@@ -411,13 +415,6 @@ function rainOut(nextIdx) {
       done: false,
     }))
   );
-
-  // Draw current state synchronously before first RAF to prevent flash
-  ctx.clearRect(0, 0, W, H);
-  for (const d of drops) {
-    ctx.fillStyle = `rgb(${d.lum},${d.lum},${d.lum})`;
-    ctx.fillRect(d.x, d.y, SZ, SZ);
-  }
 
   function step() {
     ctx.clearRect(0, 0, W, H);
