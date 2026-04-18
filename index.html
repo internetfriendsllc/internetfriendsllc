@@ -305,6 +305,17 @@ function animateIn(imgIdx) {
   const targets = getTargets(imgIdx);
   const TRAVEL = 25;
 
+  // Overlay centered with CSS — tracks the canvas as the viewport resizes.
+  // x-coords are identical to canvas coords. y-coords are recalculated each frame.
+  const overlay = document.createElement('canvas');
+  overlay.width = W;
+  overlay.height = window.innerHeight;
+  overlay.style.cssText = `position:fixed;top:0;left:50%;transform:translateX(-50%);width:${W}px;pointer-events:none;z-index:9999;image-rendering:pixelated;`;
+  document.body.appendChild(overlay);
+  currentOverlay = overlay;
+  const octx = overlay.getContext('2d');
+
+  // Group pixels by row (ty), sorted bottom to top
   const rowMap = new Map();
   for (const t of targets) {
     if (!rowMap.has(t.ty)) rowMap.set(t.ty, []);
@@ -322,16 +333,14 @@ function animateIn(imgIdx) {
     row.forEach((t, i) => {
       pixelStates.push({
         tx: t.tx,
-        ty: t.ty,
+        ty: t.ty, // canvas coords — viewport offset added per-frame
         lum: t.lum,
+        startY: 0,
         startTick: rowStartTick + i * stagger,
       });
     });
     rowStartTick += (row.length - 1) * stagger + TRAVEL + 1;
   }
-
-  // How many canvas rows above the top of the canvas should pixels fall from?
-  const fallFromRows = 10;
 
   let tick = 0;
   animating = true;
@@ -339,8 +348,11 @@ function animateIn(imgIdx) {
   placedPixels = [];
 
   function step() {
-    ctx.clearRect(0, 0, W, H);
+    octx.clearRect(0, 0, overlay.width, overlay.height);
     tick++;
+
+    // Recalculate canvas top every frame so animation stays centered on resize
+    const canvasTop = canvas.getBoundingClientRect().top;
 
     let allDone = true;
     for (const p of pixelStates) {
@@ -348,11 +360,10 @@ function animateIn(imgIdx) {
       const elapsed = tick - p.startTick;
       const progress = Math.min(1, elapsed / TRAVEL);
       const eased = progress * progress;
-      // Fall from above the canvas top (negative y) to final position
-      const startY = p.ty - (H + fallFromRows * SZ);
-      const y = Math.round(startY + (p.ty - startY) * eased);
-      ctx.fillStyle = `rgb(${p.lum},${p.lum},${p.lum})`;
-      ctx.fillRect(p.tx, y, SZ, SZ);
+      const targetY = canvasTop + p.ty;
+      const y = Math.round(p.startY + (targetY - p.startY) * eased);
+      octx.fillStyle = `rgb(${p.lum},${p.lum},${p.lum})`;
+      octx.fillRect(p.tx, y, SZ, SZ);
       if (progress < 1) {
         allDone = false;
       } else if (!p.placed) {
@@ -366,6 +377,8 @@ function animateIn(imgIdx) {
     } else {
       particles = targets.map(t => ({ x: t.tx, y: t.ty, lum: t.lum }));
       drawStatic(imgIdx);
+      overlay.remove();
+      currentOverlay = null;
       animPhase = null;
       animating = false;
     }
