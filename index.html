@@ -328,7 +328,7 @@ function animateIn(imgIdx) {
   const pixelStates = [];
   let rowStartTick = 0;
   for (const row of rows) {
-    const concurrent = 16;
+    const concurrent = Math.floor(Math.random() * 8) + 4;
     const stagger = Math.ceil(TRAVEL / concurrent);
     row.forEach((t, i) => {
       pixelStates.push({
@@ -339,7 +339,7 @@ function animateIn(imgIdx) {
         startTick: rowStartTick + i * stagger,
       });
     });
-    rowStartTick += (row.length - 1) * stagger + TRAVEL + 1;
+    rowStartTick += (row.length - 1) * stagger + 1;
   }
 
   let tick = 0;
