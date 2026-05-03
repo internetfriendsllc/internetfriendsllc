@@ -343,13 +343,19 @@ function animateIn(imgIdx) {
   }
 
   let tick = 0;
+  let lastTime = null;
   animating = true;
   animPhase = 'in';
   placedPixels = [];
 
-  function step() {
+  function step(timestamp) {
+    if (lastTime === null) { lastTime = timestamp; raf = requestAnimationFrame(step); return; }
+    const dt = Math.min(timestamp - lastTime, 50);
+    lastTime = timestamp;
+    const dtNorm = dt / (1000 / 60);
+
     octx.clearRect(0, 0, overlay.width, overlay.height);
-    tick++;
+    tick += dtNorm;
 
     // Recalculate canvas top every frame so animation stays centered on resize
     const canvasTop = canvas.getBoundingClientRect().top;
@@ -414,28 +420,35 @@ function rainOut(nextIdx) {
     }))
   );
 
-  function step() {
+  let lastTime = null;
+
+  function step(timestamp) {
+    if (lastTime === null) { lastTime = timestamp; raf = requestAnimationFrame(step); return; }
+    const dt = Math.min(timestamp - lastTime, 50);
+    lastTime = timestamp;
+    const dtNorm = dt / (1000 / 60);
+
     ctx.clearRect(0, 0, W, H);
     let allDone = true;
 
     for (const d of drops) {
       if (d.done) continue;
       allDone = false;
-      d.tick++;
+      d.tick += dtNorm;
 
       if (d.tick <= d.delay) {
         ctx.fillStyle = `rgb(${d.lum},${d.lum},${d.lum})`;
         ctx.fillRect(d.x, d.y, SZ, SZ);
         continue;
       }
-      
+
       if (d.fading) {
         d.done = true;
         continue;
       }
 
-      d.vy += GRAVITY;
-      d.y += d.vy;
+      d.vy += GRAVITY * dtNorm;
+      d.y += d.vy * dtNorm;
 
       if (d.y >= floor) {
         d.y = floor;
